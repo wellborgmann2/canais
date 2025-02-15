@@ -1,57 +1,35 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Video.js Example</title>
-
-    <!-- Estilos do Video.js -->
     <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
-    
-    <!-- Biblioteca Video.js -->
     <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
-
-    <!-- Biblioteca para HLS -->
-    <script src="https://unpkg.com/videojs-http-streaming@latest/dist/videojs-http-streaming.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/videojs-http-streaming@3.2.2/dist/videojs-http-streaming.min.js"></script>
     <style>
       body {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
-        background-color: #121212;
-        color: white;
       }
       .video-js {
         width: 100%;
-        max-width: 800px;
-        height: 500px;
-      }
-      nav {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-      }
-      .back {
-        background: #ff0000;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
+        min-height: 500px;
       }
     </style>
   </head>
   <body>
-    <nav><div class="back" onclick="window.history.back()">Voltar</div></nav>
-
+    <nav><div class="back">Voltar</div></nav>
     <video
       id="my-video"
       class="video-js vjs-default-skin"
       controls
       preload="auto"
     >
-      <p>Seu navegador não suporta a reprodução de vídeos.</p>
+      <source id="video-source" src="" type="application/x-mpegURL" />
+      Your browser does not support the video tag.
     </video>
 
     <script>
@@ -59,35 +37,30 @@
       const urlParams = new URLSearchParams(window.location.search);
       const streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
 
+      // Verifica se a URL está presente
       if (streamingUrl) {
+        // Substitui o 'src' da fonte do vídeo com a URL obtida
+        document.querySelector("#video-source").src = streamingUrl;
+
         // Inicializa o player Video.js
         var player = videojs("my-video", {
           techOrder: ["html5"],
           html5: {
             vhs: {
-              overrideNative: true, // Garante que o HLS seja tratado corretamente
-              withCredentials: false, 
-            }
-          }
+              withCredentials: false,
+            },
+          },
         });
 
-        // Define a URL do vídeo dinamicamente
-        player.src({
-          src: streamingUrl,
-          type: "application/x-mpegURL",
-        });
-
-        // Eventos de erro
         player.on("error", function () {
           console.error("Ocorreu um erro ao carregar o vídeo.");
         });
 
         player.on("loadedmetadata", function () {
-          console.log("O vídeo foi carregado com sucesso.");
+          console.log("O vídeo está carregado e pronto para ser exibido.");
         });
-
       } else {
-        console.error("Nenhuma URL de streaming fornecida.");
+        console.error("Nenhuma URL fornecida.");
       }
     </script>
   </body>
