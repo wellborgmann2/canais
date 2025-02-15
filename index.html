@@ -33,66 +33,35 @@
 
     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script>
-      // Função para seguir o redirecionamento e obter a URL final
-      async function getRedirectedUrl(url) {
-        try {
-          // Usando um proxy CORS para contornar o bloqueio
-          const corsProxyUrl = "https://cors-anywhere.herokuapp.com/";
-          const response = await fetch(corsProxyUrl + url, {
-            method: 'HEAD', // Faz uma requisição sem carregar o corpo
-            redirect: 'follow', // Segue redirecionamentos
-          });
-          if (!response.ok) {
-            throw new Error('Falha na requisição.');
-          }
-          return response.url; // Retorna a URL final após o redirecionamento
-        } catch (error) {
-          console.error('Erro ao seguir redirecionamento:', error);
-        }
-      }
-
-      // Função para verificar se o stream é válido
-      async function isValidStream(url) {
-        const response = await fetch(url);
-        const contentType = response.headers.get('Content-Type');
-        return contentType && contentType.includes('application/vnd.apple.mpegurl');
-      }
-
       // Captura o valor da URL dos parâmetros da URL
       const urlParams = new URLSearchParams(window.location.search);
-      let streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
-        streamingUrl = "https://xproxx.vercel.app/?url=http://bit.com.vc:80/mauro123/mauro123/1729848";
+      streamingUrl = "https://xproxx.vercel.app/?url=http://bit.com.vc:80/mauro123/mauro123/1729848";
+ 
       // Verifica se a URL está presente
       if (streamingUrl) {
-        getRedirectedUrl(streamingUrl).then((finalUrl) => {
-          if (finalUrl && isValidStream(finalUrl)) {
-            // Substitui o 'src' da fonte do vídeo com a URL final obtida
-            document.querySelector("#video-source").src = streamingUrl;
+        // Substitui o 'src' da fonte do vídeo com a URL obtida
+        document.querySelector("#video-source").src = streamingUrl;  
 
-            // Inicializa o player Video.js
-            var player = videojs('my-video', {
-              techOrder: ['html5'],
-              html5: {
-                vhs: {
-                  withCredentials: false, // Certifique-se de que está configurado corretamente
-                }
-              }
-            });
+        // Inicializa o player Video.js
+        var player = videojs('my-video', {
+  techOrder: ['html5'],
+  html5: {
+    hls: {
+      withCredentials: false, // Certifique-se de que está configurado corretamente
+    }
+  }
+});
 
-            player.on("error", function () {
-              console.error("Ocorreu um erro ao carregar o vídeo.");
-            });
+        player.on("error", function () {
+          console.error("Ocorreu um erro ao carregar o vídeo.");
+        });
 
-            player.on("loadedmetadata", function () {
-              console.log("O vídeo está carregado e pronto para ser exibido.");
-            });
+        player.on("loadedmetadata", function () {
+          console.log("O vídeo está carregado e pronto para ser exibido.");
+        });
 
-            player.on("readyforplay", function () {
-              console.log("O vídeo está pronto para reprodução.");
-            });
-          } else {
-            console.error("Não foi possível obter a URL final após o redirecionamento ou o stream não é válido.");
-          }
+        player.on("readyforplay", function () {
+          console.log("O vídeo está pronto para reprodução.");
         });
       } else {
         console.error("Nenhuma URL fornecida.");
