@@ -29,41 +29,31 @@
     <video id="my-video" class="video-js vjs-default-skin" controls preload="auto"></video>
 
     <script>
-      // Captura a URL do parâmetro 'url'
-      const urlParams = new URLSearchParams(window.location.search);
-      const streamingUrl = decodeURIComponent(urlParams.get("url"));
+   const urlParams = new URLSearchParams(window.location.search);
+const streamingUrl = decodeURIComponent(urlParams.get("url"));
 
-      if (streamingUrl) {
-        var player = videojs('my-video', {
-          techOrder: ['html5'],
-          html5: {
-            vhs: {  // Correção do "hls" depreciado
-              withCredentials: false,
-            }
-          }
+if (streamingUrl) {
+    var video = document.getElementById("my-video");
+
+    if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(streamingUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            video.play();
         });
-
-        // Define a nova fonte no player
-        player.src({
-          type: 'application/x-mpegURL',
-          src: streamingUrl
+    } else if (video.canPlayType("application/x-mpegURL")) {
+        video.src = streamingUrl;
+        video.addEventListener("loadedmetadata", function () {
+            video.play();
         });
+    } else {
+        console.error("HLS não é suportado neste navegador.");
+    }
+} else {
+    console.error("Nenhuma URL fornecida.");
+}
 
-        player.on("error", function () {
-          console.error("Ocorreu um erro ao carregar o vídeo.");
-        });
-
-        player.on("loadedmetadata", function () {
-          console.log("O vídeo está carregado e pronto para ser exibido.");
-        });
-
-        player.on("readyforplay", function () {
-          console.log("O vídeo está pronto para reprodução.");
-        });
-
-      } else {
-        console.error("Nenhuma URL fornecida.");
-      }
     </script>
   </body>
 </html>
