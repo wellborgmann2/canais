@@ -41,7 +41,7 @@
       // Verifica se a URL está presente
       if (streamingUrl) {
         // Substitui o 'src' da fonte do vídeo com a URL obtida
-        document.querySelector("#video-source").src = `http://157.254.54.238:7000/tv?url=${streamingUrl}&&email=${email}`;
+        document.querySelector("#video-source").src = streamingUrl;
 
         // Inicializa o player Video.js
         var player = videojs('my-video', {
