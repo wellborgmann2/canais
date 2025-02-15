@@ -41,33 +41,37 @@
 
       // Verifica se a URL está presente
       if (streamingUrl) {
-        // Substitui o 'src' da fonte do vídeo com a URL obtida
-        document.querySelector("#video-source").src =streamingUrl;
-
-        // Inicializa o player Video.js
-        var player = videojs('my-video', {
-  techOrder: ['html5'],
-  html5: {
-    hls: {
-      withCredentials: false, // Certifique-se de que está configurado corretamente
-    }
-  }
-});
-
-        player.on("error", function () {
-          console.error("Ocorreu um erro ao carregar o vídeo.");
-        });
-
-        player.on("loadedmetadata", function () {
-          console.log("O vídeo está carregado e pronto para ser exibido.");
-        });
-
-        player.on("readyforplay", function () {
-          console.log("O vídeo está pronto para reprodução.");
-        });
-      } else {
-        console.error("Nenhuma URL fornecida.");
+  var player = videojs('my-video', {
+    techOrder: ['html5'],
+    html5: {
+      vhs: {  // Configuração correta para HLS
+        withCredentials: false,
       }
+    }
+  });
+
+  // Define a nova fonte no player
+  player.src({
+    type: 'application/x-mpegURL',
+    src: streamingUrl
+  });
+
+  player.on("error", function () {
+    console.error("Ocorreu um erro ao carregar o vídeo.");
+  });
+
+  player.on("loadedmetadata", function () {
+    console.log("O vídeo está carregado e pronto para ser exibido.");
+  });
+
+  player.on("readyforplay", function () {
+    console.log("O vídeo está pronto para reprodução.");
+  });
+
+} else {
+  console.error("Nenhuma URL fornecida.");
+}
+
     </script>
     
 
