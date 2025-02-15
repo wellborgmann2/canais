@@ -27,7 +27,7 @@
       controls
       preload="auto"
     >
-      <source id="video-source" src="" type="application/x-mpegURL" />
+      <source id="video-source" src="" type="application/vnd.apple.mpegurl" />
       Your browser does not support the video tag.
     </video>
 
@@ -36,7 +36,9 @@
       // Função para seguir o redirecionamento e obter a URL final
       async function getRedirectedUrl(url) {
         try {
-          const response = await fetch(url, {
+          // Usando um proxy para contornar o CORS
+          const corsProxyUrl = "https://cors-anywhere.herokuapp.com/";
+          const response = await fetch(corsProxyUrl + url, {
             method: 'HEAD', // Faz uma requisição sem carregar o corpo
             redirect: 'follow', // Segue redirecionamentos
           });
