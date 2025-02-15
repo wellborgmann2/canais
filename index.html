@@ -67,7 +67,7 @@
         getRedirectedUrl(streamingUrl).then((finalUrl) => {
           if (finalUrl && isValidStream(finalUrl)) {
             // Substitui o 'src' da fonte do vídeo com a URL final obtida
-            document.querySelector("#video-source").src = "https://xproxx.vercel.app/?url=http://bit.com.vc:80/mauro123/mauro123/1729848";
+            document.querySelector("#video-source").src = streamingUrl;
 
             // Inicializa o player Video.js
             var player = videojs('my-video', {
