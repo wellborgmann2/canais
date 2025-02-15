@@ -42,10 +42,20 @@
             method: 'HEAD', // Faz uma requisição sem carregar o corpo
             redirect: 'follow', // Segue redirecionamentos
           });
+          if (!response.ok) {
+            throw new Error('Falha na requisição.');
+          }
           return response.url; // Retorna a URL final após o redirecionamento
         } catch (error) {
           console.error('Erro ao seguir redirecionamento:', error);
         }
+      }
+
+      // Função para verificar se o stream é válido
+      async function isValidStream(url) {
+        const response = await fetch(url);
+        const contentType = response.headers.get('Content-Type');
+        return contentType && contentType.includes('application/vnd.apple.mpegurl');
       }
 
       // Captura o valor da URL dos parâmetros da URL
@@ -55,7 +65,7 @@
       // Verifica se a URL está presente
       if (streamingUrl) {
         getRedirectedUrl(streamingUrl).then((finalUrl) => {
-          if (finalUrl) {
+          if (finalUrl && isValidStream(finalUrl)) {
             // Substitui o 'src' da fonte do vídeo com a URL final obtida
             document.querySelector("#video-source").src = finalUrl;
 
@@ -81,7 +91,7 @@
               console.log("O vídeo está pronto para reprodução.");
             });
           } else {
-            console.error("Não foi possível obter a URL final após o redirecionamento.");
+            console.error("Não foi possível obter a URL final após o redirecionamento ou o stream não é válido.");
           }
         });
       } else {
