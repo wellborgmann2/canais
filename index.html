@@ -60,8 +60,8 @@
 
       // Captura o valor da URL dos parâmetros da URL
       const urlParams = new URLSearchParams(window.location.search);
-      const streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
-        
+      let streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
+        streamingUrl = "https://xproxx.vercel.app/?url=http://bit.com.vc:80/mauro123/mauro123/1729848";
       // Verifica se a URL está presente
       if (streamingUrl) {
         getRedirectedUrl(streamingUrl).then((finalUrl) => {
