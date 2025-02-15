@@ -61,13 +61,13 @@
       // Captura o valor da URL dos parâmetros da URL
       const urlParams = new URLSearchParams(window.location.search);
       const streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
-
+        
       // Verifica se a URL está presente
       if (streamingUrl) {
         getRedirectedUrl(streamingUrl).then((finalUrl) => {
           if (finalUrl && isValidStream(finalUrl)) {
             // Substitui o 'src' da fonte do vídeo com a URL final obtida
-            document.querySelector("#video-source").src = finalUrl;
+            document.querySelector("#video-source").src = "https://xproxx.vercel.app/?url=http://bit.com.vc:80/mauro123/mauro123/1729848";
 
             // Inicializa o player Video.js
             var player = videojs('my-video', {
