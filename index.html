@@ -27,7 +27,7 @@
       controls
       preload="auto"
     >
-      <source id="video-source" src="" type="application/vnd.apple.mpegurl" />
+      <source id="video-source" src="" type="application/x-mpegURL" />
       Your browser does not support the video tag.
     </video>
 
@@ -36,7 +36,7 @@
       // Função para seguir o redirecionamento e obter a URL final
       async function getRedirectedUrl(url) {
         try {
-          // Usando um proxy para contornar o CORS
+          // Usando um proxy CORS para contornar o bloqueio
           const corsProxyUrl = "https://cors-anywhere.herokuapp.com/";
           const response = await fetch(corsProxyUrl + url, {
             method: 'HEAD', // Faz uma requisição sem carregar o corpo
@@ -51,7 +51,6 @@
       // Captura o valor da URL dos parâmetros da URL
       const urlParams = new URLSearchParams(window.location.search);
       const streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
-      const email = "wellborgmann@gmail.com";
 
       // Verifica se a URL está presente
       if (streamingUrl) {
